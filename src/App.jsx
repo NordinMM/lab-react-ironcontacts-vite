@@ -7,18 +7,22 @@ export default function App() {
 
   const handleOrderChange = (event) => {
     setOrderBy(event.target.value);
-let sortedCelebrities = [];
+
   if (orderBy === "name") {
-    sortedCelebrities = sortedCelebrities.sort((a, b) => a.name.localeCompare(b.name));
+    allContacts.sort((a, b) => a.name.localeCompare(b.name));
   } else if (orderBy === "popularity") {
-    sortedCelebrities = sortedCelebrities.sort((a, b) => b.popularity - a.popularity)
+    allContacts.sort((a, b) => b.popularity - a.popularity)
+  }}
+  const handleDelete = (id) => {
+    const newArray = allContacts.filter((c) => c.id !== id);
+    setAllContacts(newArray);
   }
   return (
     <div className="App">
       <h1>LAB | React IronContacts</h1>
       <button >Add Random Contact</button>
-      <button value="popularity" onClick={handleOrderChange.popularity}>Sorted by Popularity</button>
-      <button value="name" onClick={handleOrderChange.name}>Sorted by Name</button>
+      <button value="popularity" onClick={handleOrderChange}>Sorted by Popularity</button>
+      <button value="name" onClick={handleOrderChange}>Sorted by Name</button>
       <table className="tabla">
         <thead>
           <th>Picture</th>
@@ -29,7 +33,7 @@ let sortedCelebrities = [];
         </thead>
         <tbody>
           {allContacts.map((c) => (
-            <tr>
+            <tr key={c.id}>
               <td>
                 <img
                   style={{ width: 100 }}
@@ -41,11 +45,12 @@ let sortedCelebrities = [];
               <td>{c.popularity.toFixed(2)}</td>
               <td>{c.wonOscar ? "🏆" : ""}</td>
               <td>{c.wonEmmy ? "⭐" : ""}</td>
+              <td><button onClick={() => handleDelete(c.id)}>Delete</button></td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-}}
+}
 
